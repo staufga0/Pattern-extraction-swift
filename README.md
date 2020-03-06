@@ -5,7 +5,7 @@ This project is being made as part of the course **Outils Formels Avancé** from
 # How to build the program?
 * Go to the root of the project
 * `swift build`
-* `.build/debug/pattern-extraction-swift`
+* `swift run`
 
 ---
 | Members:           |
