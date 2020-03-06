@@ -23,14 +23,32 @@ do {
     }
 
     func visit(_ stmt: VariableDeclaration) throws -> Bool {
+      print("")
+      print("==================")
       print("Found var")
 
-      switch stmt.Body {
-      case .initializerList(let a):
-        print(stmt.textDescription)
+      print(stmt.textDescription)
+      print(stmt.attributes)
+      print(stmt.modifiers)
+      print(stmt.body)
+
+
+      switch stmt.body {
+      case .initializerList(let inits):
+        // print(stmt.textDescription)
+        // print(type(of :inits[0].pattern))
+        if let P_ident = inits[0].pattern as? IdentifierPattern {
+          print(P_ident.typeAnnotation)
+        }
+        // obj is a string array. Do something with stringArray
+
+
+
       default:
         print("Got default case")
       }
+      print("===============")
+      print("")
 
       nb2 += 1
       return true
@@ -38,7 +56,7 @@ do {
   }
   let myVisitor = MyVisitor()
   let topLevelDecl = try parser.parse()
-  try myVisitor.traverse(topLevelDecl)
+  try _ =  myVisitor.traverse(topLevelDecl)
 
   print(nb)
 
