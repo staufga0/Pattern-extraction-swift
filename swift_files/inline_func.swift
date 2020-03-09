@@ -15,7 +15,7 @@
 
     return s
 }
-func notInlineEvenFibo(_ max: Int) -> Int {
+func notInlineEvenFibo(_ max: Int = 3) -> Int {
 
     var n1 = 1, n2 = 1
     var sFib = 0, s = 0

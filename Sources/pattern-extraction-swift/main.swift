@@ -6,6 +6,7 @@ print("main has been run")
 var infered_types = 0
 var inlineAlways = 0
 var inlineNever = 0
+var defaultArg = 0
 var nb = 0
 var nb2 = 0
 
@@ -19,6 +20,10 @@ do {
 
   class MyVisitor : ASTVisitor {
     func visit(_ stmt: FunctionDeclaration) throws -> Bool {
+
+      // -------------------------------------------------------------
+      // inline test
+      //-----------------------------------------------------------//
       for a in stmt.attributes {
         if a.name.textDescription == "inline" {
           if a.argumentClause!.textDescription == "(never)" {
@@ -26,10 +31,17 @@ do {
           } else if a.argumentClause!.textDescription == "(__always)" {
             inlineAlways += 1
           }
-          print(a.name.textDescription, "    ", a.argumentClause as Any)
+          // print(a.name.textDescription, "    ", a.argumentClause as Any)
         }
-
       }
+      //----------------------------------------------------------
+      for p in stmt.signature.parameterList {
+
+        if p.defaultArgumentClause != nil {
+          defaultArg += 1
+        }
+      }
+
       return true
 
     }
@@ -40,7 +52,7 @@ do {
           if P_ident.typeAnnotation == nil{
             infered_types += 1
           }
-          print(P_ident.typeAnnotation as Any)
+          // print(P_ident.typeAnnotation as Any)
         }
         return true
     }
@@ -61,7 +73,7 @@ do {
           if P_ident.typeAnnotation == nil{
             infered_types += 1
           }
-          print(P_ident.typeAnnotation as Any)
+          // print(P_ident.typeAnnotation as Any)
         }
         // obj is a string array. Do something with stringArray
 
@@ -69,7 +81,7 @@ do {
         if typeAnnotation == nil{
           infered_types += 1
         }
-        print(typeAnnotation as Any)
+        // print(typeAnnotation as Any)
 
       default:
         print("Got default case")
@@ -88,6 +100,7 @@ do {
   print("number of type inference found: ", infered_types)
   print("number of inline never found: ", inlineNever)
   print("number of inline Always found: ", inlineAlways)
+  print("number of default value for arguement found: ", defaultArg)
 
   // for stmt in topLevelDecl.statements {
   //   // consume statement
