@@ -46,7 +46,11 @@ do {
         }
         // obj is a string array. Do something with stringArray
 
-
+      case let .willSetDidSetBlock(name, typeAnnotation, initExpr, block):
+        if typeAnnotation == nil{
+          infered_types += 1
+        }
+        print(typeAnnotation as Any)
 
       default:
         print("Got default case")
