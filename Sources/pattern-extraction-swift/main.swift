@@ -3,7 +3,7 @@ import Parser
 import Source
 
 print("main has been run")
-
+var infered_types = 0
 var nb = 0
 var nb2 = 0
 
@@ -15,22 +15,23 @@ do {
 
   class MyVisitor : ASTVisitor {
     func visit(_ stmt: ConstantDeclaration) throws -> Bool {
-      // visit this if statement
-      print("Found const")
-
-      nb += 1
-      return true
+        if let P_ident = stmt.initializerList[0].pattern as? IdentifierPattern {
+          if P_ident.typeAnnotation == nil{
+            infered_types += 1
+          }
+          print(P_ident.typeAnnotation as Any)
+        }
+        return true
     }
-
     func visit(_ stmt: VariableDeclaration) throws -> Bool {
-      print("")
-      print("==================")
-      print("Found var")
-
-      print(stmt.textDescription)
-      print(stmt.attributes)
-      print(stmt.modifiers)
-      print(stmt.body)
+      // print("")
+      // print("==================")
+      // print("Found var")
+      //
+      // print(stmt.textDescription)
+      // print(stmt.attributes)
+      // print(stmt.modifiers)
+      // print(stmt.body)
 
 
       switch stmt.body {
@@ -38,7 +39,10 @@ do {
         // print(stmt.textDescription)
         // print(type(of :inits[0].pattern))
         if let P_ident = inits[0].pattern as? IdentifierPattern {
-          print(P_ident.typeAnnotation)
+          if P_ident.typeAnnotation == nil{
+            infered_types += 1
+          }
+          print(P_ident.typeAnnotation as Any)
         }
         // obj is a string array. Do something with stringArray
 
@@ -47,8 +51,8 @@ do {
       default:
         print("Got default case")
       }
-      print("===============")
-      print("")
+      // print("===============")
+      // print("")
 
       nb2 += 1
       return true
@@ -58,7 +62,7 @@ do {
   let topLevelDecl = try parser.parse()
   try _ =  myVisitor.traverse(topLevelDecl)
 
-  print(nb)
+  print("number of type inference found: ", infered_types)
 
   // for stmt in topLevelDecl.statements {
   //   // consume statement
