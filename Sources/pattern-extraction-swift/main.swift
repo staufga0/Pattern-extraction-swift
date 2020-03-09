@@ -7,18 +7,28 @@ var infered_types = 0
 var inlineAlways = 0
 var inlineNever = 0
 var defaultArg = 0
+var clos = 0
 var nb = 0
 var nb2 = 0
 
 do {
   // let sourceFile = try SourceReader.read(at: "swift_files/type_inferance.swift")
-  let sourceFile = try SourceReader.read(at: "swift_files/inline_func.swift")
+  // let sourceFile = try SourceReader.read(at: "swift_files/inline_func.swift")
+  let sourceFile = try SourceReader.read(at: "swift_files/closure.swift")
 
   let parser = Parser(source: sourceFile)
   // let topLevelDecl = try parser.parse()
 
 
   class MyVisitor : ASTVisitor {
+    //------------------------------------------------------------------------
+    // closure ( or lambda in kotlin)
+    func visit(_ stmt: ClosureExpression) throws -> Bool {
+      clos += 1
+      return true
+    }
+
+
     func visit(_ stmt: FunctionDeclaration) throws -> Bool {
 
       // -------------------------------------------------------------
@@ -35,6 +45,8 @@ do {
         }
       }
       //----------------------------------------------------------
+      // default value for argument
+      //----------------------------------------------------
       for p in stmt.signature.parameterList {
 
         if p.defaultArgumentClause != nil {
@@ -101,6 +113,7 @@ do {
   print("number of inline never found: ", inlineNever)
   print("number of inline Always found: ", inlineAlways)
   print("number of default value for arguement found: ", defaultArg)
+  print("number of closure found: ", clos)
 
   // for stmt in topLevelDecl.statements {
   //   // consume statement
