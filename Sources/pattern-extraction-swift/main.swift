@@ -4,16 +4,37 @@ import Source
 
 print("main has been run")
 var infered_types = 0
+var inlineAlways = 0
+var inlineNever = 0
 var nb = 0
 var nb2 = 0
 
 do {
-  let sourceFile = try SourceReader.read(at: "swift_files/type_inferance.swift")
+  // let sourceFile = try SourceReader.read(at: "swift_files/type_inferance.swift")
+  let sourceFile = try SourceReader.read(at: "swift_files/inline_func.swift")
+
   let parser = Parser(source: sourceFile)
   // let topLevelDecl = try parser.parse()
 
 
   class MyVisitor : ASTVisitor {
+    func visit(_ stmt: FunctionDeclaration) throws -> Bool {
+      for a in stmt.attributes {
+        if a.name.textDescription == "inline" {
+          if a.argumentClause!.textDescription == "(never)" {
+            inlineNever += 1
+          } else if a.argumentClause!.textDescription == "(__always)" {
+            inlineAlways += 1
+          }
+          print(a.name.textDescription, "    ", a.argumentClause as Any)
+        }
+
+      }
+      return true
+
+    }
+
+    // Type inference :
     func visit(_ stmt: ConstantDeclaration) throws -> Bool {
         if let P_ident = stmt.initializerList[0].pattern as? IdentifierPattern {
           if P_ident.typeAnnotation == nil{
@@ -32,8 +53,6 @@ do {
       // print(stmt.attributes)
       // print(stmt.modifiers)
       // print(stmt.body)
-
-
       switch stmt.body {
       case .initializerList(let inits):
         // print(stmt.textDescription)
@@ -46,7 +65,7 @@ do {
         }
         // obj is a string array. Do something with stringArray
 
-      case let .willSetDidSetBlock(name, typeAnnotation, initExpr, block):
+      case let .willSetDidSetBlock(_, typeAnnotation, _, _):
         if typeAnnotation == nil{
           infered_types += 1
         }
@@ -67,6 +86,8 @@ do {
   try _ =  myVisitor.traverse(topLevelDecl)
 
   print("number of type inference found: ", infered_types)
+  print("number of inline never found: ", inlineNever)
+  print("number of inline Always found: ", inlineAlways)
 
   // for stmt in topLevelDecl.statements {
   //   // consume statement
