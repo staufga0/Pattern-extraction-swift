@@ -1,0 +1,22 @@
+
+Présentation du papier   --> analyse d'utilisation de features du langage --> features appréciées, sous utilisée. retours sur la réception du language par les programmeurs
+
+on veut faire ça pour swift
+- reprise des principales de kotlin
+- ajout de features swift
+
+
+2 axes :
+- AST
+- Explore github
+
+
+recall AST
+une librairie nous dump l'AST
+
+exemple du comptage de valeur par défaut fonction
+
+Explore github:
+outils existants à adapté
+
+- biais de sélection
