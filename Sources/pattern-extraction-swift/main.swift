@@ -1,4 +1,4 @@
 let pe = PatternExtractor()
 
-pe.applyToOne("swift_files/closure.swift", printResults: true)
+pe.applyToOne("swift_files/closure.swift", debug: true)
 pe.applyToAll("swift_files/files/")

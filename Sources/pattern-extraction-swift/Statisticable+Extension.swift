@@ -1,13 +1,13 @@
 import Foundation
 
 protocol Statisticable {
-  func run(_ file: String, printResults: Bool) -> Dictionary<String, Int>?
+  func run(_ file: String, debug: Bool) -> Dictionary<String, Int>?
 }
 
 extension Statisticable {
   // path is the path of a directory in which files are listed in the form:
   // <username>/<repo>/<filename>/<commit_sha>/<file>.swift
-  public func applyToAll(_ path: String) {
+  public func applyToAll(_ path: String, debug: Bool = false) {
     let url = URL(string: path)!
 
     print("Applying to all files at location: " + path + "\n")
@@ -40,7 +40,7 @@ extension Statisticable {
             // TODO: Extract timestamp from sha value and jsonFile
             let timestamp = 0
 
-            let output = run(file.path, printResults: false)
+            let output = run(file.path, debug: debug)
             computeStatistics(output, username, repo, filename, timestamp)
           }
         }
@@ -49,8 +49,8 @@ extension Statisticable {
   }
 
   // Used for testing, only applies the run() function to one file
-  public func applyToOne(_ path: String, printResults: Bool = true) {
-    let _ = run(path, printResults: printResults)
+  public func applyToOne(_ path: String, debug: Bool = false) {
+    let _ = run(path, debug: debug)
   }
 
   // Function which takes the patterns counting as argument and process it to

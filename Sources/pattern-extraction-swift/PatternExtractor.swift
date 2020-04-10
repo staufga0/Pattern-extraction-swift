@@ -3,7 +3,7 @@ import Parser
 import Source
 
 class PatternExtractor : Statisticable {
-  func run(_ file: String, printResults: Bool) -> Dictionary<String, Int>? {
+  func run(_ file: String, debug: Bool) -> Dictionary<String, Int>? {
 
     do {
       let sourceFile = try SourceReader.read(at: file)
@@ -15,7 +15,7 @@ class PatternExtractor : Statisticable {
 
       // Print found results. (Only encountered patterns will be added to the
       // dictionary and therefore printed here.
-      if(printResults) {
+      if(debug) {
         for (key, val) in myVisitor.counts {
           print("'" + key + "' found :", val)
         }
