@@ -12,7 +12,7 @@ Refere to the README at the root of this project.
 Only Linux is supported. The reason why is that the program calls the following shell commands `git`, `find` and `rm`.
 
 #### How does the program work?
-The program opens the file called `active_url_list.txt` which contains the github link of every reposiory to download in the form of : `https://github.com/<username>/<repo`>.
+The program opens the file called `active_url_list.txt` which contains the github link of every reposiory to download in the form of : `https://github.com/<username>/<repo>`.
 
 The program clones one of the repositories, finds all the `.swift` files in it, lists all the commits of each file, checkouts each commit of each file individualy and makes a copy of it in a directory called `files`.
 
@@ -45,7 +45,7 @@ files/
 ```
 
 Inside of each `repo` folder is located a `infos.json` file. This file contains an array of all files in the repo where each file has:
-* `path` : the path of the file in the original project
-* `name` : the exact name of the file
-* `numberedname` : the name of the file prefixed with a number, each file has a diffrent number to avoid conflicts in case there are two files with the same name in two different folders
-* `commits` : a dictionary where the key of each element is the sha digest of a commit and the associated value is a dictionary containing two keys: `time` containing the epoch date of the commit and `msg` containing the commit message  
+* `path` : the path of the file in the original project.
+* `name` : the exact name of the file.
+* `numberedname` : the name of the file prefixed with a number, each file has a diffrent number to avoid conflicts in case there are two files with the same name in two different folders in the original project.
+* `commits` : a dictionary where the key of each element is the sha digest of a commit and the associated value is a dictionary containing two keys: `time` containing the epoch date of the commit and `msg` containing the commit message.  
