@@ -2,9 +2,8 @@
 
 This project is being made as part of the course **Outils Formels Avancé** from UNIGE
 
-# How to build the program?
+# How to run the program?
 * Go to the root of the project
-* `swift build`
 * `swift run`
 
 ---
