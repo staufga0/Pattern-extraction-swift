@@ -3,3 +3,13 @@
 /Packages
 /*.xcodeproj
 xcuserdata/
+
+# Python execution leftover files
+__pycache__/
+
+# Project download logs
+downloading_projects/*_log.txt
+
+# Downloaded projects
+downloading_projects/files/
+swift_files/files/
