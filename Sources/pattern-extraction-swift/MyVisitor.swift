@@ -96,7 +96,8 @@ class MyVisitor : ASTVisitor {
       // print(typeAnnotation as Any)
 
     default:
-      print("Got default case")
+      // print("Got default case")
+      break
     }
     // print("===============")
     // print("")
