@@ -16,11 +16,13 @@ do {
   let topLevelDecl = try parser.parse()
   try _ =  myVisitor.traverse(topLevelDecl)
 
-  print("number of type inference found: ", myVisitor.infered_types)
-  print("number of inline never found: ", myVisitor.inlineNever)
-  print("number of inline Always found: ", myVisitor.inlineAlways)
-  print("number of default value for arguement found: ", myVisitor.defaultArg)
-  print("number of closure found: ", myVisitor.clos)
+
+  // Print found results. (Only encountered patterns will be added to the
+  // dictionary and therefore printed here.
+  for (key, val) in myVisitor.counts {
+    print("'" + key + "' found :", val)
+  }
+
 
   // for stmt in topLevelDecl.statements {
   //   // consume statement
