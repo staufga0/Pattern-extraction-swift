@@ -25,6 +25,9 @@ extension Statisticable {
         let jsonFile = json[0]
         // print("    -", jsonFile.lastPathComponent)
 
+        // Converting the infos.json file into a Dictionary
+        let jsonInfos = readJsonInfos(jsonFile)!
+
         for filename in filenames {
           print("    -", filename.lastPathComponent)
 
@@ -37,8 +40,7 @@ extension Statisticable {
             // let first4 = String(sha.lastPathComponent.prefix(4))
             // print("      -", first4 + "... " + file.lastPathComponent)
 
-            // TODO: Extract timestamp from sha value and jsonFile
-            let timestamp = 0
+            let timestamp = getTime(filename.lastPathComponent, sha.lastPathComponent, jsonInfos)
 
             let output = run(file.path, debug: debug)
             computeStatistics(output, username, repo, filename, timestamp)
@@ -55,7 +57,7 @@ extension Statisticable {
 
   // Function which takes the patterns counting as argument and process it to
   // create the statistics to analyse the use of patterns in a bunch of projects.
-  private func computeStatistics(_ output: Dictionary<String, Int>?, _ username: URL, _ repo: URL, _ filename: URL, _ timestamp: Int) {
+  private func computeStatistics(_ output: Dictionary<String, Int>?, _ username: URL, _ repo: URL, _ filename: URL, _ timestamp: String) {
     // TODO: Record the evolution of counting of patterns per project, according
     // to time.
     if (output != nil) {
@@ -111,5 +113,37 @@ extension Statisticable {
         print("Error while enumerating files \(documentsURL.path): \(error.localizedDescription)")
     }
     return (dirs, nonDirs)
+  }
+
+  private func readJsonInfos(_ jsonFile : URL) -> Dictionary<String, Dictionary<String, Any>>? {
+    let jsonData: String
+
+    // Opening the file
+    do {
+      jsonData = try String(contentsOf: jsonFile, encoding: .utf8)
+    }
+    catch {
+      print("infos.json could not be opened")
+      return nil
+    }
+
+    // Conversion
+    let data = Data(jsonData.utf8)
+    let json: Dictionary<String, Dictionary<String, Any>>
+    do {
+        // make sure this JSON is in the format we expect
+        json = try JSONSerialization.jsonObject(with: data, options: []) as! Dictionary<String, Dictionary<String, Any>>
+        return json
+    } catch let error as NSError {
+        print("Failed to load: \(error.localizedDescription)")
+        return nil
+    }
+  }
+
+  // Extract timestamp for a given file and given sha from jsonInfos
+  private func getTime(_ filename: String, _ sha: String, _ jsonInfos: Dictionary<String, Dictionary<String, Any>>) -> String {
+    let commits_infos = jsonInfos[filename]!["commits"]! as! Dictionary<String, Dictionary<String, String>>
+    let timestamp = commits_infos[sha]!["time"]!
+    return timestamp
   }
 }
