@@ -67,7 +67,7 @@ def extract(username, repo, only_do_json=False):
     cwd = "./files/" + username + "/" + repo
     infos_path =  cwd + "/infos.json"
 
-    json_data = []
+    json_data = {}
 
     files = get_files_from_repo(repo)
     total = len(files)
@@ -104,7 +104,8 @@ def extract(username, repo, only_do_json=False):
 
                 download_file(file, sha, dest, repo)
 
-        json_data.append({'path': file, 'name': name, "numberedname": numberedname, 'commits': commits})#, 'lookup': lookup})
+        json_data[numberedname] = {'path': file, 'name': name, 'commits': commits}
+        # json_data.append({'path': file, 'name': name, "numberedname": numberedname, 'commits': commits})#, 'lookup': lookup})
     print()
 
 
