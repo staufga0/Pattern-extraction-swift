@@ -28,6 +28,36 @@ class MyVisitor : ASTVisitor {
     return true
   }
 
+  //------------------------------------------------------------------------
+  // protocol
+  //------------------------------------------------------------------------
+  func visit(_ stmt: ProtocolDeclaration) throws -> Bool {
+    incr("protocol")
+    // print("")
+    // print("")
+    // print(stmt.textDescription)
+    for member in stmt.members{
+      switch member {
+      case .associatedType(let AssociativityTypeMember):
+        incr("protocol with associated datatype")
+
+      default:
+        // print("Got default case")
+        break
+      }
+    }
+    // print(stmt.textDescription)
+    // print(stmt.attributes.isEmpty ? "" : "\(stmt.attributes.textDescription) ")
+    // print(stmt.typeInheritanceClause?.textDescription ?? "")
+    //
+    // if stmt.memeber
+    // print("")
+    // let membersText = stmt.members.map({ $0.textDescription }).joined(separator: "\n")
+    // let memberText = stmt.members.isEmpty ? "" : "\n\(membersText)\n"
+    // print("{\(memberText)}")
+    return true
+  }
+
 
   func visit(_ stmt: FunctionDeclaration) throws -> Bool {
     //----------------------------------------------------------------------
