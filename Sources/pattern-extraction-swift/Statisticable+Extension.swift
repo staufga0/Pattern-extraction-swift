@@ -43,7 +43,14 @@ extension Statisticable {
             let timestamp = getTime(filename.lastPathComponent, sha.lastPathComponent, jsonInfos)
 
             let output = run(file.path, debug: debug)
-            computeStatistics(output, username, repo, filename, timestamp)
+            if(output == nil) {
+              // Also works
+              // print("Error encountered in: " + username.lastPathComponent + "/" + repo.lastPathComponent + "/" + filename.lastPathComponent + "/" + sha.lastPathComponent + " returned nil\n", to: &logger)
+              logger.write("Error encountered in: " + username.lastPathComponent + "/" + repo.lastPathComponent + "/" + filename.lastPathComponent + "/" + sha.lastPathComponent + " returned nil\n")
+            }
+            else {
+              computeStatistics(output!, username, repo, filename, timestamp)
+            }
           }
         }
       }
@@ -57,10 +64,10 @@ extension Statisticable {
 
   // Function which takes the patterns counting as argument and process it to
   // create the statistics to analyse the use of patterns in a bunch of projects.
-  private func computeStatistics(_ output: Dictionary<String, Int>?, _ username: URL, _ repo: URL, _ filename: URL, _ timestamp: String) {
+  private func computeStatistics(_ output: Dictionary<String, Int>, _ username: URL, _ repo: URL, _ filename: URL, _ timestamp: String) {
     // TODO: Record the evolution of counting of patterns per project, according
     // to time.
-    if (output != nil) {
+    if (!output.isEmpty) {
       // At least one of the paterns we're looking for has been found
     }
     else {
