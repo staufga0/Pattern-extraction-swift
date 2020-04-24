@@ -24,7 +24,72 @@ class MyVisitor : ASTVisitor {
   // closure ( or lambda in kotlin)
   //------------------------------------------------------------------------
   func visit(_ stmt: ClosureExpression) throws -> Bool {
-    incr("clos")
+    incr("closure")
+    return true
+  }
+
+  //------------------------------------------------------------------------
+  // protocol
+  //------------------------------------------------------------------------
+  func visit(_ stmt: ProtocolDeclaration) throws -> Bool {
+    incr("protocol")
+    // print("")
+    // print("")
+    // print(stmt.textDescription)
+    for member in stmt.members{
+      switch member {
+      case .associatedType(_):
+        incr("protocol with associated datatype")
+
+      default:
+        // print("Got default case")
+        break
+      }
+    }
+    // print(stmt.textDescription)
+    // print(stmt.attributes.isEmpty ? "" : "\(stmt.attributes.textDescription) ")
+    // print(stmt.typeInheritanceClause?.textDescription ?? "")
+    //
+    // if stmt.memeber
+    // print("")
+    // let membersText = stmt.members.map({ $0.textDescription }).joined(separator: "\n")
+    // let memberText = stmt.members.isEmpty ? "" : "\n\(membersText)\n"
+    // print("{\(memberText)}")
+    return true
+  }
+
+
+  //------------------------------------------------------------------------
+  // Class declaration
+  //------------------------------------------------------------------------
+  func visit(_ stmt: ClassDeclaration) throws -> Bool {
+    incr("class declaration")
+    return true
+  }
+
+  //------------------------------------------------------------------------
+  // Struct declaration
+  //------------------------------------------------------------------------
+  func visit(_ stmt: StructDeclaration) throws -> Bool {
+    incr("struct declaration")
+    return true
+  }
+
+  //------------------------------------------------------------------------
+  // Extension
+  //------------------------------------------------------------------------
+  func visit(_ stmt: ExtensionDeclaration) throws -> Bool {
+    incr("extension")
+    // print("")
+    // print("")
+    // print(stmt.textDescription)
+    if(stmt.typeInheritanceClause != nil){
+      incr("extension with protocol")
+    }
+    if(stmt.genericWhereClause != nil){
+      incr("extension with where clause")
+    }
+
     return true
   }
 
