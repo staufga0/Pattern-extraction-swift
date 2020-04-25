@@ -10,7 +10,7 @@ struct Log: TextOutputStream {
 
     func write(_ string: String) {
         let string2 = ("[" + generateCurrentTimeStamp() + "] ") + string
-        let log = URL(fileURLWithPath: "./log.txt")
+        let log = URL(fileURLWithPath: "./swift_run_log.txt")
         if let handle = try? FileHandle(forWritingTo: log) {
             handle.seekToEndOfFile()
             handle.write(string2.data(using: .utf8)!)
