@@ -190,7 +190,11 @@ class MyVisitor : ASTVisitor {
     return true
   }
 
-
+  func visit(_ stmt: OptionalChainingExpression) throws -> Bool {
+    incr("Optional Chaining")
+    // print(stmt)
+    return true
+  }
 
 
 
