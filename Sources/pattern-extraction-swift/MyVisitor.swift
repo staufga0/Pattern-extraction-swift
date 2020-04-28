@@ -83,11 +83,15 @@ class MyVisitor : ASTVisitor {
     // print("")
     // print("")
     // print(stmt.textDescription)
+    // print(stmt.attributes)
     if(stmt.typeInheritanceClause != nil){
       incr("extension with protocol")
     }
-    if(stmt.genericWhereClause != nil){
+    else if(stmt.genericWhereClause != nil){
       incr("extension with where clause")
+    }
+    else {
+      incr("protocol extension ?(might be smthg else)")
     }
 
     return true
@@ -140,13 +144,22 @@ class MyVisitor : ASTVisitor {
     //
     // print(stmt.textDescription)
     // print(stmt.attributes)
-    // print(stmt.modifiers)
-    // print(stmt.body)
+    // print(stmt.modifiers)    // print(stmt.modifiers)
+
+
+
     switch stmt.body {
     case .initializerList(let inits):
       // print(stmt.textDescription)
       // print(type(of :inits[0].pattern))
+
+      // print(stmt.body)
+      // print(inits.map({ $0.textDescription }).joined(separator: ", "))
       if let P_ident = inits[0].pattern as? IdentifierPattern {
+        if P_ident.typeAnnotation?.type is OptionalType {
+          incr("optional")
+        }
+
         if P_ident.typeAnnotation == nil{
           incr("infered_types")
         }
@@ -170,4 +183,40 @@ class MyVisitor : ASTVisitor {
     incr("variable_declaration")
     return true
   }
+
+
+
+
+  // optionals
+  func visit(_ stmt: OptionalType) throws -> Bool {
+    incr("optional")
+    // print("")
+    // print("")
+    // print(stmt.textDescription)
+    // print(stmt.attributes)
+
+    return true
+  }
+  func visit(_ stmt: ImplicitlyUnwrappedOptionalType) throws -> Bool {
+    incr("ImplicitlyUnwrappedOptionalType")
+    // print("")
+    // print("")
+    print(stmt.textDescription)
+    // print(stmt.attributes)
+
+    return true
+  }
+  func visit(_ stmt: OptionalPattern) throws -> Bool {
+    incr("Optional Pattern")
+    // print("")
+    // print("")
+    print(stmt.textDescription)
+    // print(stmt.attributes)
+
+    return true
+  }
+
+
+
+
 }
