@@ -102,6 +102,9 @@ class MyVisitor : ASTVisitor {
     //----------------------------------------------------------------------
     // inline test
     //----------------------------------------------------------------------
+    if stmt.signature.result?.type is OptionalType {
+      incr("optional return value")
+    }
     for a in stmt.attributes {
       if a.name.textDescription == "inline" {
         if a.argumentClause!.textDescription == "(never)" {
@@ -127,9 +130,12 @@ class MyVisitor : ASTVisitor {
 
   }
 
-  // Type inference :
+  // Type inference and optionalss:
   func visit(_ stmt: ConstantDeclaration) throws -> Bool {
       if let P_ident = stmt.initializerList[0].pattern as? IdentifierPattern {
+        if P_ident.typeAnnotation?.type is OptionalType {
+          incr("optional")
+        }
         if P_ident.typeAnnotation == nil{
           incr("infered_types")
         }
@@ -187,34 +193,6 @@ class MyVisitor : ASTVisitor {
 
 
 
-  // optionals
-  func visit(_ stmt: OptionalType) throws -> Bool {
-    incr("optional")
-    // print("")
-    // print("")
-    // print(stmt.textDescription)
-    // print(stmt.attributes)
-
-    return true
-  }
-  func visit(_ stmt: ImplicitlyUnwrappedOptionalType) throws -> Bool {
-    incr("ImplicitlyUnwrappedOptionalType")
-    // print("")
-    // print("")
-    print(stmt.textDescription)
-    // print(stmt.attributes)
-
-    return true
-  }
-  func visit(_ stmt: OptionalPattern) throws -> Bool {
-    incr("Optional Pattern")
-    // print("")
-    // print("")
-    print(stmt.textDescription)
-    // print(stmt.attributes)
-
-    return true
-  }
 
 
 

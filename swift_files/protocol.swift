@@ -14,6 +14,11 @@ protocol FullyNamed {
     var fullName: String { get }
 }
 
+extension FullyNamed {
+    public func printname(){
+      print("name: ", fullName)
+    }
+}
 
 
 
