@@ -20,19 +20,21 @@ def filename_from_path(path):
 # Returns sha, timestamps and title of all commits of a file
 def get_commits_from_file(path, repo):
     # command = 'git --no-pager log --follow --pretty=format:"%C(auto)%H;%ct;%s" -- ' + path
-    command = 'git --no-pager log --pretty=format:"%C(auto)%H;%ct;%s" -- ' + path
+    # command = 'git --no-pager log --pretty=format:"%C(auto)%H;%ct;%s" -- ' + path
+    command = 'git --no-pager log --pretty=format:"%C(auto)%H;%ct;%s" --name-only --follow -- ' + path
     output = subprocess.check_output(command, shell=True, cwd=("./" + repo)).decode("utf-8")
 
-    # res = []
-    # lookup = {}
-    commits = {}
-    for el in output.split('\n'):
-        parts = el.split(';')
-        # res.append({"sha": parts[0], "time": parts[1], "msg": ''.join(parts[2:])})
-        # lookup[parts[0]] = parts[1]
-        commits[parts[0]] = {"time": parts[1], "msg": ''.join(parts[2:])}
 
-    # return (res, lookup)
+    commits = {}
+    for commit_infos in output.split('\n\n'):
+        lines = commit_infos.split("\n")
+        el = lines[0].rstrip()
+        filename = lines[1].rstrip()
+        parts = el.split(';')
+
+        commits[parts[0]] = {"time": parts[1], "filename": filename, "msg": ''.join(parts[2:])}
+
+
     return commits
 
 def add_repo_to_path(path, repo):
@@ -93,19 +95,16 @@ def extract(username, repo, only_do_json=False):
         print(str(idx+1) + "/" + str(total) + " for: " + name, end="", flush=True)
 
         # Get commits, checkout on each of them, copy files
-        # (commits, lookup) = get_commits_from_file(file, repo)
         commits = get_commits_from_file(file, repo)
 
         if(not only_do_json):
             for sha in commits:
-            # for commit in commits:
-                # sha = commit['sha']
                 dest = cwd + "/" + numberedname + "/" + sha
+                actual_filename = "./" + commits[sha]["filename"]
 
-                download_file(file, sha, dest, repo)
+                download_file(actual_filename, sha, dest, repo)
 
         json_data[numberedname] = {'path': file, 'name': name, 'commits': commits}
-        # json_data.append({'path': file, 'name': name, "numberedname": numberedname, 'commits': commits})#, 'lookup': lookup})
     print()
 
 

@@ -13,3 +13,6 @@ downloading_projects/*_log.txt
 # Downloaded projects
 downloading_projects/files/
 swift_files/files/
+
+# Swift log file we used
+swift_run_log.txt
