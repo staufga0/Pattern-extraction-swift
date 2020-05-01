@@ -139,6 +139,7 @@ class MyVisitor : ASTVisitor {
         if P_ident.typeAnnotation == nil{
           incr("infered_types")
         }
+        incr("constant declaration")
         // print(P_ident.typeAnnotation as Any)
       }
       return true
@@ -186,7 +187,7 @@ class MyVisitor : ASTVisitor {
     // print("===============")
     // print("")
 
-    incr("variable_declaration")
+    incr("variable declaration")
     return true
   }
 
