@@ -18,10 +18,13 @@ def filename_from_path(path):
     return Path(path).name
 
 # Returns sha, timestamps and title of all commits of a file
-def get_commits_from_file(path, repo):
+def get_commits_from_file(path, repo) :
     # command = 'git --no-pager log --follow --pretty=format:"%C(auto)%H;%ct;%s" -- ' + path
     # command = 'git --no-pager log --pretty=format:"%C(auto)%H;%ct;%s" -- ' + path
-    command = 'git --no-pager log --pretty=format:"%C(auto)%H;%ct;%s" --name-only --follow -- ' + path
+    # print(path)
+    # command = 'git --no-pager log --pretty=format:"%C(auto)%H;%ct;%s" --name-only --follow -- ' + path
+    command = 'git --no-pager log --pretty=format:"%C(auto)%H;%ct;%s" --name-only --follow \"' + path + '"'
+
     output = subprocess.check_output(command, shell=True, cwd=("./" + repo)).decode("utf-8")
 
 
@@ -95,16 +98,19 @@ def extract(username, repo, only_do_json=False):
         print(str(idx+1) + "/" + str(total) + " for: " + name, end="", flush=True)
 
         # Get commits, checkout on each of them, copy files
-        commits = get_commits_from_file(file, repo)
+        try :
+            commits = get_commits_from_file(file, repo)
 
-        if(not only_do_json):
-            for sha in commits:
-                dest = cwd + "/" + numberedname + "/" + sha
-                actual_filename = "./" + commits[sha]["filename"]
+            if(not only_do_json):
+                for sha in commits:
+                    dest = cwd + "/" + numberedname + "/" + sha
+                    actual_filename = "./" + commits[sha]["filename"]
 
-                download_file(actual_filename, sha, dest, repo)
+                    download_file(actual_filename, sha, dest, repo)
 
-        json_data[numberedname] = {'path': file, 'name': name, 'commits': commits}
+            json_data[numberedname] = {'path': file, 'name': name, 'commits': commits}
+        except Exception as err :
+            print(err)
     print()
 
 
