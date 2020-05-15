@@ -85,13 +85,17 @@ class MyVisitor : ASTVisitor {
     // print(stmt.textDescription)
     // print(stmt.attributes)
     if(stmt.typeInheritanceClause != nil){
-      incr("extension with protocol")
+      // incr("extension with protocol")
+      incr("retroactive modeling")
+
     }
     else if(stmt.genericWhereClause != nil){
-      incr("extension with where clause")
+      // incr("extension with where clause")
+      incr("bounded polymorphism")
+
     }
     else {
-      incr("protocol extension ?(might be smthg else)")
+      incr("protocol extension")
     }
 
     return true
@@ -108,9 +112,9 @@ class MyVisitor : ASTVisitor {
     for a in stmt.attributes {
       if a.name.textDescription == "inline" {
         if a.argumentClause!.textDescription == "(never)" {
-          incr("inlineNever")
+          incr("inline never")
         } else if a.argumentClause!.textDescription == "(__always)" {
-          incr("inlineAlways")
+          incr("inline always")
         }
         // print(a.name.textDescription, "    ", a.argumentClause as Any)
       }
@@ -122,7 +126,7 @@ class MyVisitor : ASTVisitor {
     for p in stmt.signature.parameterList {
 
       if p.defaultArgumentClause != nil {
-        incr("defaultArg")
+        incr("default argument for a function parameter")
       }
     }
 
@@ -137,7 +141,7 @@ class MyVisitor : ASTVisitor {
           incr("optional")
         }
         if P_ident.typeAnnotation == nil{
-          incr("infered_types")
+          incr("infered types")
         }
         incr("constant declaration")
         // print(P_ident.typeAnnotation as Any)
@@ -168,7 +172,7 @@ class MyVisitor : ASTVisitor {
         }
 
         if P_ident.typeAnnotation == nil{
-          incr("infered_types")
+          incr("infered types")
         }
         // print(P_ident.typeAnnotation as Any)
       }
@@ -176,7 +180,7 @@ class MyVisitor : ASTVisitor {
 
     case let .willSetDidSetBlock(_, typeAnnotation, _, _):
       if typeAnnotation == nil{
-        incr("infered_types")
+        incr("infered types")
       }
       // print(typeAnnotation as Any)
 
@@ -192,7 +196,7 @@ class MyVisitor : ASTVisitor {
   }
 
   func visit(_ stmt: OptionalChainingExpression) throws -> Bool {
-    incr("Optional Chaining")
+    incr("optional chaining")
     // print(stmt)
     return true
   }
