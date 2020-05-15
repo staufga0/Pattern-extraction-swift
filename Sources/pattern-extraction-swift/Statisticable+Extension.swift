@@ -71,15 +71,24 @@ extension Statisticable {
     let myJsonData = try? JSONSerialization.data(withJSONObject: allOuputs, options: [])
     // print("Obtained jsonDAta")
     // print("Json data:", myJsonData ?? "empty")
-    let jsonString = String(data: myJsonData!, encoding: .utf8) as! String
+    let jsonString = String(data: myJsonData!, encoding: .utf8)! as String
     // print(jsonString)
 
     let outJsonPath = URL(fileURLWithPath: "./output_data.json")
     do {
-      try? jsonString.write(to: outJsonPath, atomically: true, encoding: String.Encoding.utf8)
+      try jsonString.write(to: outJsonPath, atomically: true, encoding: String.Encoding.utf8)
     }
     catch {
       print("Could not write the data to the disk")
+    }
+
+    let myKeys = allKeys.joined(separator: "\n")
+    let outKeys = URL(fileURLWithPath: "./all_keys.txt")
+    do {
+      try myKeys.write(to: outKeys, atomically: true, encoding: String.Encoding.utf8)
+    }
+    catch {
+      print("Could not write the list of keys to the disk")
     }
   }
 
