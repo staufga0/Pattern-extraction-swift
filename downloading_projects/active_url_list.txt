@@ -1,1 +1,6 @@
 https://github.com/andreamazz/AMScrollingNavbar
+https://github.com/vsouza/awesome-ios
+https://github.com/Alamofire/Alamofire
+https://github.com/shadowsocks/ShadowsocksX-NG
+https://github.com/dkhamsing/open-source-ios-apps
+https://github.com/iina/iina
