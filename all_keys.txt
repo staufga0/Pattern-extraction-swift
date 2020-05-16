@@ -1,0 +1,16 @@
+retroactive modeling
+class declaration
+protocol with associated datatype
+bounded polymorphism
+infered types
+optional return value
+protocol extension
+constant declaration
+protocol
+default argument for a function parameter
+optional chaining
+struct declaration
+extension
+optional
+closure
+variable declaration

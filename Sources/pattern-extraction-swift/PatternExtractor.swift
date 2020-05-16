@@ -25,7 +25,7 @@ class PatternExtractor : Statisticable {
     }
     catch {
       // handle errors
-      print("error: \(error).")
+      // print("error: \(error).")
       return nil
     }
 

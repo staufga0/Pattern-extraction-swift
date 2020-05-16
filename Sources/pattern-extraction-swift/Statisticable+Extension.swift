@@ -7,19 +7,24 @@ protocol Statisticable {
 extension Statisticable {
   // path is the path of a directory in which files are listed in the form:
   // <username>/<repo>/<filename>/<commit_sha>/<file>.swift
-  public func applyToAll(_ path: String, debug: Bool = false) {
+  public func applyToAll(_ path: String, _ outpath: String, _ keyspath: String , debug: Bool = false) {
     let url = URL(string: path)!
 
     print("Applying to all files at location: " + path + "\n")
 
     let usernames = listDirs(url)
+    var allOuputs = [String: [String: [String: [String: Int]]]]()
+    var allKeys = Set<String>()
 
     for username in usernames {
+      allOuputs[username.lastPathComponent] = [:];
       print(username.lastPathComponent)
       let repos = listDirs(username)
 
       for repo in repos {
+        allOuputs[username.lastPathComponent]?[repo.lastPathComponent] = [:]
         print(" -", repo.lastPathComponent)
+
 
         let (filenames, json) = listDirsAndFiles(repo)
         let jsonFile = json[0]
@@ -49,11 +54,41 @@ extension Statisticable {
               logger.write("Error encountered in: " + username.lastPathComponent + "/" + repo.lastPathComponent + "/" + filename.lastPathComponent + "/" + sha.lastPathComponent + " returned nil\n")
             }
             else {
-              computeStatistics(output!, username, repo, filename, timestamp)
+              computeStatistics(output!, username, repo, filename, timestamp, &allOuputs, &allKeys)
             }
           }
         }
+        // print(allOuputs)
+        // var sortedKeys = Array(allOuputs[username.lastPathComponent]![repo.lastPathComponent]!.keys)
+        // sortedKeys.sort(by: <)
+        // print(sortedKeys)
+        // print(allKeys)
       }
+    }
+
+    // When finished write the values to json file
+    // print("About to jsonify")
+    let myJsonData = try? JSONSerialization.data(withJSONObject: allOuputs, options: [])
+    // print("Obtained jsonDAta")
+    // print("Json data:", myJsonData ?? "empty")
+    let jsonString = String(data: myJsonData!, encoding: .utf8)! as String
+    // print(jsonString)
+
+    let outJsonPath = URL(fileURLWithPath: outpath)
+    do {
+      try jsonString.write(to: outJsonPath, atomically: true, encoding: String.Encoding.utf8)
+    }
+    catch {
+      print("Could not write the data to the disk")
+    }
+
+    let myKeys = allKeys.joined(separator: "\n")
+    let outKeys = URL(fileURLWithPath: keyspath)
+    do {
+      try myKeys.write(to: outKeys, atomically: true, encoding: String.Encoding.utf8)
+    }
+    catch {
+      print("Could not write the list of keys to the disk")
     }
   }
 
@@ -64,15 +99,30 @@ extension Statisticable {
 
   // Function which takes the patterns counting as argument and process it to
   // create the statistics to analyse the use of patterns in a bunch of projects.
-  private func computeStatistics(_ output: Dictionary<String, Int>, _ username: URL, _ repo: URL, _ filename: URL, _ timestamp: String) {
-    // TODO: Record the evolution of counting of patterns per project, according
-    // to time.
-    if (!output.isEmpty) {
-      // At least one of the paterns we're looking for has been found
+  private func computeStatistics(_ output: Dictionary<String, Int>, _ username: URL, _ repo: URL, _ filename: URL, _ timestamp: String, _ allOuputs: inout [String: [String: [String: [String: Int]]]], _ allKeys: inout Set<String>) {
+    let timestampNumber = timestamp
+    let keyExists = allOuputs[username.lastPathComponent]?[repo.lastPathComponent]?[timestampNumber] != nil
+
+    if(keyExists) {
+      for (key, value) in output {
+        let valueExists = allOuputs[username.lastPathComponent]?[repo.lastPathComponent]?[timestampNumber]![key] != nil
+        if(valueExists) {
+          allOuputs[username.lastPathComponent]?[repo.lastPathComponent]?[timestampNumber]![key]? += value
+        }
+        else {
+          allOuputs[username.lastPathComponent]?[repo.lastPathComponent]?[timestampNumber]![key]? = value
+        }
+
+        allKeys.insert(key)
+      }
     }
     else {
-      // None of the patterns we're looking for have been found
+      allOuputs[username.lastPathComponent]?[repo.lastPathComponent]?[timestampNumber] = output
+      for (key, _) in output {
+        allKeys.insert(key)
+      }
     }
+
   }
 
   // Returns a list of directories in a directory specified by an URL
