@@ -1,15 +1,17 @@
-infered types
+extension
+optional
+constant declaration
 optional return value
-class declaration
+protocol extension
+default argument for a function parameter
+protocol with associated datatype
+struct declaration
+infered types
 retroactive modeling
 bounded polymorphism
-struct declaration
-constant declaration
-closure
-optional chaining
-protocol extension
-optional
 protocol
+optional chaining
 variable declaration
-default argument for a function parameter
-extension
+closure
+class declaration
+inline always
