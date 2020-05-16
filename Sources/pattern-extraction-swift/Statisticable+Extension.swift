@@ -7,7 +7,7 @@ protocol Statisticable {
 extension Statisticable {
   // path is the path of a directory in which files are listed in the form:
   // <username>/<repo>/<filename>/<commit_sha>/<file>.swift
-  public func applyToAll(_ path: String, debug: Bool = false) {
+  public func applyToAll(_ path: String, _ outpath: String, _ keyspath: String , debug: Bool = false) {
     let url = URL(string: path)!
 
     print("Applying to all files at location: " + path + "\n")
@@ -74,7 +74,7 @@ extension Statisticable {
     let jsonString = String(data: myJsonData!, encoding: .utf8)! as String
     // print(jsonString)
 
-    let outJsonPath = URL(fileURLWithPath: "./output_data.json")
+    let outJsonPath = URL(fileURLWithPath: outpath)
     do {
       try jsonString.write(to: outJsonPath, atomically: true, encoding: String.Encoding.utf8)
     }
@@ -83,7 +83,7 @@ extension Statisticable {
     }
 
     let myKeys = allKeys.joined(separator: "\n")
-    let outKeys = URL(fileURLWithPath: "./all_keys.txt")
+    let outKeys = URL(fileURLWithPath: keyspath)
     do {
       try myKeys.write(to: outKeys, atomically: true, encoding: String.Encoding.utf8)
     }

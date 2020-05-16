@@ -1,14 +1,16 @@
-protocol extension ?(might be smthg else)
-extension with protocol
-Optional Chaining
-variable declaration
-protocol
+retroactive modeling
 class declaration
-closure
-infered_types
-defaultArg
-optional
-extension
+protocol with associated datatype
+bounded polymorphism
+infered types
 optional return value
-struct declaration
+protocol extension
 constant declaration
+protocol
+default argument for a function parameter
+optional chaining
+struct declaration
+extension
+optional
+closure
+variable declaration
