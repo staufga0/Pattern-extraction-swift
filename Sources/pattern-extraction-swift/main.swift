@@ -7,7 +7,7 @@ let pe = PatternExtractor()
 // pe.applyToAll("swift_files/files/a2", "./GR2_out_data9.json", "./GRall_keys9.txt")
 // pe.applyToAll("swift_files/files/a3", "./GR2_out_data10.json", "./GRall_keys10.txt")
 // pe.applyToAll("swift_files/files/a4", "./GR2_out_data11.json", "./GRall_keys11.txt")
-// pe.applyToAll("swift_files/files/a5", "./GR2_out_data12.json", "./GRall_keys12.txt")
+pe.applyToAll("swift_files/files/a5", "./GR2_out_data12.json", "./GRall_keys12.txt")
 // pe.applyToAll("swift_files/files/a6", "./GR2_out_data13.json", "./GRall_keys13.txt")
 
 
@@ -19,7 +19,7 @@ let pe = PatternExtractor()
 // pe.applyToAll("swift_files/files/b5", "./GR2_out_data5.json", "./GRall_keys5.txt")
 // pe.applyToAll("swift_files/files/b6", "./GR2_out_data6.json", "./GRall_keys6.txt")
 // pe.applyToAll("swift_files/files/b7", "./GR2_out_data7.json", "./GRall_keys7.txt")
-pe.applyToAll("swift_files/files/b", "./GR2_out_data.json", "./GRall_keys.txt")
+// pe.applyToAll("swift_files/files/b", "./GR2_out_data.json", "./GRall_keys.txt")
 
 
 // pe.applyToAll("/media/gibran/Extreme%20SSD/Pattern_files/files/", "./out_data.json", "./all_keys.txt")

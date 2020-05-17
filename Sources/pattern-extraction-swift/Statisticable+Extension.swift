@@ -107,8 +107,8 @@ extension Statisticable {
     //   allKeys.insert(key)
     // }
 
-    print(filename.lastPathComponent)
-    print(timestampNumber)
+    // print(filename.lastPathComponent)
+    // print(timestampNumber)
     if (allOuputs[username.lastPathComponent] == nil){
       allOuputs[username.lastPathComponent] = [repo.lastPathComponent : [timestampNumber :[filename.lastPathComponent : output]]]
     }else if (allOuputs[username.lastPathComponent]![repo.lastPathComponent] == nil){

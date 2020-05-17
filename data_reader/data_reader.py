@@ -32,17 +32,27 @@ for name, rep in data.items():
         for commit, fil in sorted(com.items(), reverse = True):
             commdata[name][repo][commit] = {}
             for file, count in fil.items() :
-                for alreadyseen, fil2 in sorted(com.items(), reverse = True) :
-                    if not file in fil2  or fil == fil2:
+                s = False
+                for alreadyseen, fil2 in sorted(com.items()) :
+                    if s and not file in fil2:
                         for key in count :
                             # print(commdata)
                             if key in commdata[name][repo][alreadyseen] :
                                 commdata[name][repo][alreadyseen][key] += count[key]
                             else :
                                 commdata[name][repo][alreadyseen][key] = count[key]
-                    if fil == fil2 :
+                    if s and file in fil :
                         break
-                print(file)
+                    if alreadyseen == commit :
+                        s = True
+                        for key in count :
+                            # print(commdata)
+                            # print("activated")
+                            if key in commdata[name][repo][alreadyseen] :
+                                commdata[name][repo][alreadyseen][key] += count[key]
+                            else :
+                                commdata[name][repo][alreadyseen][key] = count[key]
+                # print(file)
 
 print(commdata)
 
