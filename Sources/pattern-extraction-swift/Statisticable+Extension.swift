@@ -13,7 +13,7 @@ extension Statisticable {
     print("Applying to all files at location: " + path + "\n")
 
     let usernames = listDirs(url)
-    var allOuputs = [String: [String: [String: [String: Int]]]]()
+    var allOuputs = [String: [String: [String: [String: [String: Int]]]]]()
     var allKeys = Set<String>()
 
     for username in usernames {
@@ -99,29 +99,49 @@ extension Statisticable {
 
   // Function which takes the patterns counting as argument and process it to
   // create the statistics to analyse the use of patterns in a bunch of projects.
-  private func computeStatistics(_ output: Dictionary<String, Int>, _ username: URL, _ repo: URL, _ filename: URL, _ timestamp: String, _ allOuputs: inout [String: [String: [String: [String: Int]]]], _ allKeys: inout Set<String>) {
+  private func computeStatistics(_ output: Dictionary<String, Int>, _ username: URL, _ repo: URL, _ filename: URL, _ timestamp: String, _ allOuputs: inout [String :[String: [String: [String: [String: Int]]]]], _ allKeys: inout Set<String>) {
     let timestampNumber = timestamp
-    let keyExists = allOuputs[username.lastPathComponent]?[repo.lastPathComponent]?[timestampNumber] != nil
+    // print(filename.lastPathComponent)
+    // allOuputs[username.lastPathComponent]?[repo.lastPathComponent]?[timestampNumber]?[filename.lastPathComponent] = output
+    // for (key, _) in output {
+    //   allKeys.insert(key)
+    // }
 
-    if(keyExists) {
-      for (key, value) in output {
-        let valueExists = allOuputs[username.lastPathComponent]?[repo.lastPathComponent]?[timestampNumber]![key] != nil
-        if(valueExists) {
-          allOuputs[username.lastPathComponent]?[repo.lastPathComponent]?[timestampNumber]![key]? += value
-        }
-        else {
-          allOuputs[username.lastPathComponent]?[repo.lastPathComponent]?[timestampNumber]![key]? = value
-        }
+    print(filename.lastPathComponent)
+    print(timestampNumber)
+    if (allOuputs[username.lastPathComponent] == nil){
+      allOuputs[username.lastPathComponent] = [repo.lastPathComponent : [timestampNumber :[filename.lastPathComponent : output]]]
+    }else if (allOuputs[username.lastPathComponent]![repo.lastPathComponent] == nil){
+      allOuputs[username.lastPathComponent]![repo.lastPathComponent] = [timestampNumber :[filename.lastPathComponent : output]]
+    }else if (allOuputs[username.lastPathComponent]![repo.lastPathComponent]![timestamp] == nil){
+      allOuputs[username.lastPathComponent]![repo.lastPathComponent]![timestampNumber] = [filename.lastPathComponent : output]
+    }else{
+      allOuputs[username.lastPathComponent]![repo.lastPathComponent]![timestampNumber]![filename.lastPathComponent] = output
+    }
 
-        allKeys.insert(key)
-      }
-    }
-    else {
-      allOuputs[username.lastPathComponent]?[repo.lastPathComponent]?[timestampNumber] = output
-      for (key, _) in output {
-        allKeys.insert(key)
-      }
-    }
+    // let keyExists = allOuputs[username.lastPathComponent]?[repo.lastPathComponent]?[timestampNumber]?[filename.las] != nil
+    //
+    // if(keyExists) {
+    //    allOuputs[username.lastPathComponent]?[repo.lastPathComponent]?[timestampNumber]?[filename.lastPathComponent] = output
+    //    // for (key, value) in output {
+    //    //   let valueExists = allOuputs[username.lastPathComponent]?[repo.lastPathComponent]?[timestampNumber]![key] != nil
+    // //     if(valueExists) {
+    // //       allOuputs[username.lastPathComponent]?[repo.lastPathComponent]?[timestampNumber]![key]? += value
+    // //     }
+    // //     else {
+    // //       allOuputs[username.lastPathComponent]?[repo.lastPathComponent]?[timestampNumber]![key]? = value
+    // //     }
+    // //
+    // //     allKeys.insert(key)
+    // //   }
+    // }
+    // else {
+    //   print("hello")
+    //   allOuputs[username.lastPathComponent] = [repo.lastPathComponent : [timestampNumber :[filename.lastPathComponent : output]]]
+    //   for (key, _) in output {
+    //     allKeys.insert(key)
+    //   }
+    // }
 
   }
 

@@ -14,29 +14,63 @@ try:
 except IOError as e:
           print('Operation failed: %s' % e.strerror)
 
+# print(data)
+
+commdata={}
+
 for name, rep in data.items():
+    commdata[name] = {}
     print('')
     print('')
     print(name)
     for repo, com in rep.items():
-        c = 0
+        commdata[name][repo] = {}
 
         vd_time = []
         vd_nb = []
+        # print(com)
+        for commit, fil in sorted(com.items(), reverse = True):
+            commdata[name][repo][commit] = {}
+            for file, count in fil.items() :
+                for alreadyseen, fil2 in sorted(com.items(), reverse = True) :
+                    if not file in fil2  or fil == fil2:
+                        for key in count :
+                            # print(commdata)
+                            if key in commdata[name][repo][alreadyseen] :
+                                commdata[name][repo][alreadyseen][key] += count[key]
+                            else :
+                                commdata[name][repo][alreadyseen][key] = count[key]
+                    if fil == fil2 :
+                        break
+                print(file)
 
-        for commit, count in com.items():
-            vd_time.append(int(commit))
-            if "constant declaration" in count :
-                vd_nb.append(count["constant declaration"])
-            else :
-                vd_nb.append(0)
-            if c == 0 :
-                for pattern, number in count.items():
-                    print(pattern)
-                c = 1
-        plt.figure()
-        plt.plot(vd_time, vd_nb,'o')
-        plt.title(repo)
-        plt.ylabel("number of constant declaration")
-        plt.show()
-        # print(repo)
+print(commdata)
+
+
+
+# for name, rep in data.items():
+#     print('')
+#     print('')
+#     print(name)
+#     for repo, com in rep.items():
+#         c = 0
+#
+#         vd_time = []
+#         vd_nb = []
+#
+#         for commit, count in com.items():
+#             vd_time.append(int(commit))
+#             if "constant declaration" in count :
+#                 vd_nb.append(count["constant declaration"])
+#             else :
+#                 vd_nb.append(0)
+#             if c == 0 :
+#                 for pattern, number in count.items():
+#                     print(pattern)
+#                 c = 1
+#         plt.figure()
+#         plt.plot(vd_time, vd_nb,'o')
+#         plt.title(repo)
+#         plt.ylabel("number of constant declaration")
+#         plt.show()
+#         # print(repo)

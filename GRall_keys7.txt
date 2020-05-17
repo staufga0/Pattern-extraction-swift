@@ -1,0 +1,17 @@
+protocol with associated datatype
+retroactive modeling
+variable declaration
+bounded polymorphism
+constant declaration
+inline always
+closure
+protocol extension
+optional return value
+optional
+extension
+protocol
+struct declaration
+optional chaining
+class declaration
+infered types
+default argument for a function parameter
