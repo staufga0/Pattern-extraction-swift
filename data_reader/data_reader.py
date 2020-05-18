@@ -15,6 +15,7 @@ except IOError as e:
 
 nbProjet = 0
 stats = {}
+feature ={}
 for name, rep in data.items():
     print('')
     print('')
@@ -25,12 +26,25 @@ for name, rep in data.items():
         for key in count:
             if key in stats:
                 stats[key].append(count[key])
+                feature[key] += 1
             else :
                 stats[key] = [count[key]]
+                feature[key] = 1
 
-for key in stats :
-    print(key, ' mean: ', np.mean(stats[key]))
-    print(key, ' std: ', np.std(stats[key]))
+
+for x,y in sorted([(np.mean(stats[k]),k) for k in stats]) :
+    print(y, ': ', x)
+
+
+print("")
+print("")
+
+for x,y in sorted([(feature[k]/nbProjet,k) for k in feature]) :
+    print(y, ': {0:2f}%'.format(x*100))
+
+# for key in stats :
+#     print(key, ' mean: ', np.mean(stats[key]))
+    # print(key, ' std: ', np.std(stats[key]))
 
 print("nb projet: ", nbProjet)
 # for name, rep in data.items():
