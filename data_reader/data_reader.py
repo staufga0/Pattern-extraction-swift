@@ -79,7 +79,11 @@ for x,y in sorted([(np.mean(p_time[k]),k) for k in p_time]) :
 #     print(key, ' mean: ', np.mean(stats[key]))
     # print(key, ' std: ', np.std(stats[key]))
 
+
+print("")
+print("")
 print("nb projet: ", nbProjet)
+
 # for name, rep in data.items():
 #     print('')
 #     print('')
@@ -92,8 +96,8 @@ print("nb projet: ", nbProjet)
 #
 #         for commit, count in com.items():
 #             vd_time.append(int(commit))
-#             if "class declaration" in count :
-#                 vd_nb.append(count["class declaration"])
+#             if "optional chaining" in count :
+#                 vd_nb.append(count["optional chaining"])
 #             else :
 #                 vd_nb.append(0)
 #             if c == 0 :
@@ -102,7 +106,7 @@ print("nb projet: ", nbProjet)
 #                 c = 1
 #         plt.figure()
 #         plt.plot(vd_time, vd_nb,'o')
-#         plt.title(repo)
-#         plt.ylabel("number of class declaration")
+#         plt.title("project: "+ repo)
+#         plt.ylabel("number of optional chaining")
 #         plt.show()
 #         # print(repo)
