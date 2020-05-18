@@ -9,19 +9,32 @@ folder_path = os.getcwd()+'/datas'
 try:
     with open("processed_data.json", 'r') as f:
         data = json.load(f)
-
+# data : {name: {repo : {timestamp:{feature:int}}}}
 except IOError as e:
           print('Operation failed: %s' % e.strerror)
 
 nbProjet = 0
 stats = {}
 feature ={}
+time={}
 for name, rep in data.items():
     print('')
     print('')
     print(name)
     for repo, com in rep.items():
         nbProjet += 1
+
+        ts = sorted(com)[0]
+        seen = []
+        for commit, count in sorted(com.items()) :
+            for key in count :
+                if not key in seen :
+                    seen.append(key)
+                    if key in time :
+                        time[key].append((int(commit)-int(ts))/3600/24)
+                    else :
+                        time[key] = [(int(commit)-int(ts))/3600/24]
+
         commit, count = sorted(com.items(), reverse=True)[0]
         for key in count:
             if key in stats:
@@ -31,16 +44,24 @@ for name, rep in data.items():
                 stats[key] = [count[key]]
                 feature[key] = 1
 
-
-for x,y in sorted([(np.mean(stats[k]),k) for k in stats]) :
-    print(y, ': ', x)
-
+#
+# for x,y in sorted([(np.mean(stats[k]),k) for k in stats]) :
+#     print(y, ': ', x)
+#
 
 print("")
 print("")
 
 for x,y in sorted([(feature[k]/nbProjet,k) for k in feature]) :
     print(y, ': {0:2f}%'.format(x*100))
+
+
+print("")
+print("")
+
+for x,y in sorted([(np.mean(time[k]),k) for k in time]) :
+    print(y, ': {0:2f} : {1:2f}'.format(x, np.std(time[y])))
+#
 
 # for key in stats :
 #     print(key, ' mean: ', np.mean(stats[key]))
