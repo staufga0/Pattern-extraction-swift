@@ -17,6 +17,7 @@ nbProjet = 0
 stats = {}
 feature ={}
 time={}
+p_time ={}
 for name, rep in data.items():
     print('')
     print('')
@@ -25,6 +26,7 @@ for name, rep in data.items():
         nbProjet += 1
 
         ts = sorted(com)[0]
+        te = sorted(com, reverse=True)[0]
         seen = []
         for commit, count in sorted(com.items()) :
             for key in count :
@@ -32,8 +34,10 @@ for name, rep in data.items():
                     seen.append(key)
                     if key in time :
                         time[key].append((int(commit)-int(ts))/3600/24)
+                        p_time[key].append((int(commit)-int(ts))/(int(te)-int(ts)))
                     else :
                         time[key] = [(int(commit)-int(ts))/3600/24]
+                        p_time[key] =[(int(commit)-int(ts))/(int(te)-int(ts))]
 
         commit, count = sorted(com.items(), reverse=True)[0]
         for key in count:
@@ -62,6 +66,14 @@ print("")
 for x,y in sorted([(np.mean(time[k]),k) for k in time]) :
     print(y, ': {0:2f} : {1:2f}'.format(x, np.std(time[y])))
 #
+
+
+
+print("")
+print("")
+
+for x,y in sorted([(np.mean(p_time[k]),k) for k in p_time]) :
+    print(y, ': {0:2f}% : {1:2f}'.format(x*100, np.std(p_time[y])))
 
 # for key in stats :
 #     print(key, ' mean: ', np.mean(stats[key]))
