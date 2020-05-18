@@ -73,7 +73,7 @@ print("")
 print("")
 
 for x,y in sorted([(np.mean(p_time[k]),k) for k in p_time]) :
-    print(y, ': {0:2f}% : {1:2f}'.format(x*100, np.std(p_time[y])))
+    print(y, ': {0:2f}% : {1:2f}'.format(x*100, np.std(p_time[y])*100))
 
 # for key in stats :
 #     print(key, ' mean: ', np.mean(stats[key]))
