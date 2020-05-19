@@ -13,8 +13,15 @@ This project is being made as part of the course **Outils Formels Avancé** from
 * Run `downloading_projects.py`
 * Finally, move the generated directory `downloading_projects/files` inside of `swift_files/`
 
+
 ---
 | Members:           |
 | ------------------ |
 |Chevalley Gibran    |
 |Stauffer Guy-Raphaël|
+
+
+this project uses the yanagiba/swift-ast, licensed under the Apache License, Version 2.0
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
